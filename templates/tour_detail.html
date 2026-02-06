@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ tour.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .gallery-img {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .gallery-img:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/">Travel Agency</a>
+    </div>
+</nav>
+
+<div class="container mt-5">
+
+    <h2 class="mb-2 fw-bold">{{ tour.title }}</h2>
+    <p class="text-muted">{{ tour.destination }}</p>
+
+    <!-- IMAGE GALLERY (6 Images) -->
+    <div class="row mb-4">
+        {% for img in tour.images.all|slice:":6" %}
+        <div class="col-md-4 col-sm-6 mb-3">
+            <img src="{{ img.image.url }}"
+                 class="img-fluid rounded shadow-sm gallery-img w-100">
+        </div>
+        {% empty %}
+        <p class="text-center">No images available.</p>
+        {% endfor %}
+    </div>
+
+    <!-- TOUR DETAILS -->
+    <div class="row">
+        <div class="col-md-8">
+
+            <h5>Description</h5>
+            <p>{{ tour.description }}</p>
+
+            <ul class="list-group mb-4">
+                <li class="list-group-item">
+                    Destination: <strong>{{ tour.destination }}</strong>
+                </li>
+                <li class="list-group-item">
+                    Duration: <strong>{{ tour.duration }} days</strong>
+                </li>
+                <li class="list-group-item">
+                    Price: <strong>₹ {{ tour.price }}</strong>
+                </li>
+            </ul>
+
+            <div class="d-flex gap-3">
+                <a href="/book/{{ tour.id }}/" class="btn btn-success btn-lg">
+                    Book Now
+                </a>
+                <a href="/" class="btn btn-secondary btn-lg">
+                    Back
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
