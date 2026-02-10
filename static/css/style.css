@@ -24,12 +24,24 @@ body {
 }
 
 .hero {
-    height: 90vh;
-    background: url("../images/hero.jpg") center/cover;
-    color: white;
+    height: 100vh;
+    background:
+        linear-gradient(
+            rgba(0,0,0,0.55),
+            rgba(0,0,0,0.65),
+            rgba(248,249,250,1)
+        ),
+        url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e")
+        no-repeat center center / cover;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    padding-top: 200px;
+    color: #fff;
 }
+
+
 
 .btn {
     background: #ffc107;
@@ -74,3 +86,9 @@ body {
     height: 200px;
     object-fit: cover;
 }
+
+
+
+
+
+
