@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <!-- VERY IMPORTANT FOR MOBILE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Popular Tours | Travel Agency</title>
 
     <!-- Bootstrap -->
@@ -30,19 +34,19 @@
             color: #d1d5db;
         }
 
-        /* HORIZONTAL SCROLL */
+        /* SCROLL CONTAINER */
         .scroll-container {
             display: flex;
-            gap: 28px;
+            gap: 24px;
             overflow-x: auto;
             padding: 15px 10px 35px;
             scroll-behavior: smooth;
         }
 
-        /* SCROLLBAR */
         .scroll-container::-webkit-scrollbar {
-            height: 12px;
+            height: 10px;
         }
+
         .scroll-container::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 10px;
@@ -51,11 +55,12 @@
         /* CARD */
         .tour-card {
             min-width: 320px;
-            height: 210px;
-            border-radius: 22px;
+            height: 220px;
+            border-radius: 20px;
             overflow: hidden;
             position: relative;
             transition: 0.3s ease;
+            flex-shrink: 0;
         }
 
         .tour-card:hover {
@@ -68,35 +73,69 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
         }
 
-        /* DESTINATION NAME – CENTER OF IMAGE */
+        /* DESTINATION NAME */
         .destination-name {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2rem;
-    font-weight: 800;
-    color: #ffffff;
-    background: transparent;
-    letter-spacing: 1px;
-    text-align: center;
-    white-space: nowrap;
-    text-shadow:
-        0 2px 10px rgba(0,0,0,0.8),
-        0 0 20px rgba(0,0,0,0.6);
-}
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-align: center;
+            text-shadow:
+                0 2px 10px rgba(0,0,0,0.8),
+                0 0 20px rgba(0,0,0,0.6);
+        }
+
+        /* 📱 TABLET */
+        @media (max-width: 992px) {
+            .tour-card {
+                min-width: 260px;
+                height: 190px;
+            }
+
+            .destination-name {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* 📱 MOBILE */
+        @media (max-width: 576px) {
+            .page-wrapper {
+                padding: 40px 0;
+            }
+
+            .tour-card {
+                min-width: 85%;
+                height: 180px;
+            }
+
+            .destination-name {
+                font-size: 1.4rem;
+            }
+
+            .page-header h2 {
+                font-size: 1.6rem;
+            }
+
+            .page-header p {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 
 <body>
+
 <nav class="navbar navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand fw-bold" href="/">Travel Agency</a>
     </div>
 </nav>
+
 <div class="page-wrapper">
     <div class="container">
 
@@ -120,7 +159,6 @@
                         <img src="https://via.placeholder.com/400x220">
                     {% endif %}
 
-                    <!-- NAME CENTERED ON IMAGE -->
                     <div class="destination-name">
                         {{ tour.destination.name }}
                     </div>
