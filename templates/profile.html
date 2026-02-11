@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <!-- IMPORTANT FOR MOBILE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>My Profile</title>
 
     <!-- Bootstrap -->
@@ -17,6 +21,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
 
         .profile-card {
@@ -28,22 +33,22 @@
 
         .profile-header {
             background: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee") center/cover;
-            padding: 40px 20px;
+            padding: 50px 20px;
             color: white;
             text-align: center;
         }
 
         .profile-avatar {
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             background: white;
             color: #0083b0;
-            font-size: 40px;
+            font-size: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: -45px auto 15px;
+            margin: -50px auto 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
@@ -53,10 +58,54 @@
             border-radius: 12px;
             padding: 10px;
             font-weight: 600;
+            transition: 0.3s;
         }
 
         .btn-travel:hover {
             background-color: #009ddc;
+        }
+
+        /* ===== TABLET ===== */
+        @media (max-width: 992px) {
+            .profile-header {
+                padding: 40px 20px;
+            }
+        }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 576px) {
+
+            body {
+                align-items: flex-start;
+                padding-top: 40px;
+            }
+
+            .profile-card {
+                border-radius: 16px;
+            }
+
+            .profile-header {
+                padding: 35px 15px;
+            }
+
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 32px;
+                margin: -40px auto 10px;
+            }
+
+            .card-body {
+                padding: 20px !important;
+            }
+
+            h5 {
+                font-size: 1.1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -64,7 +113,7 @@
 <body>
 
 <div class="card profile-card shadow-lg">
-    
+
     <!-- Header -->
     <div class="profile-header">
         <h4>Traveler Profile</h4>

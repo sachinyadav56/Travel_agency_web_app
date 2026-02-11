@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Booking</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -11,6 +14,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
 
         .edit-card {
@@ -55,6 +59,26 @@
             border-radius: 12px;
             text-align: center;
         }
+
+        /* Mobile Improvements */
+        @media (max-width: 576px) {
+            .edit-card {
+                padding: 20px;
+            }
+
+            .edit-title {
+                font-size: 1.4rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .button-group .btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
@@ -62,7 +86,7 @@
 
 <div class="edit-card">
 
-    <h3 class="edit-title"> Edit Your Booking</h3>
+    <h3 class="edit-title">Edit Your Booking</h3>
 
     <!-- Messages -->
     {% if messages %}
@@ -101,7 +125,7 @@
         </div>
 
         <!-- Buttons -->
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between button-group">
             <button type="submit" class="btn btn-update text-white">
                 Update Booking
             </button>
