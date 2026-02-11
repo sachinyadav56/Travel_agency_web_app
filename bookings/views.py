@@ -4,35 +4,33 @@ from django.contrib import messages
 from .models import Booking
 from tours.models import TourPackage
 
-
-@login_required(login_url='login')
+@login_required
 def book_tour(request, tour_id):
     tour = get_object_or_404(TourPackage, id=tour_id)
 
     if request.method == "POST":
-        seats = int(request.POST.get('seats', 0))
-
-        if seats <= 0:
-            messages.error(request, "Invalid seat count")
-            return redirect('book_tour', tour_id=tour.id)
+        seats = int(request.POST.get("seats"))
 
         if seats > tour.available_seats:
-            messages.error(request, "Not enough seats available")
-            return redirect('book_tour', tour_id=tour.id)
+            messages.error(request, "Not enough seats available!")
+            return render(request, 'book_tour.html', {'tour': tour})
 
-        Booking.objects.create(
+        # Create booking
+        booking = Booking.objects.create(
             user=request.user,
-            tour=tour,
-            seats_booked=seats
+            tour=tour 
+            
         )
 
+        # Reduce available seats
         tour.available_seats -= seats
         tour.save()
 
-        messages.success(request, "Booking successful")
-        return redirect('my_bookings')
+        # Redirect to payment page
+        return redirect('payment_page', booking.id)
 
     return render(request, 'book_tour.html', {'tour': tour})
+
 
 
 @login_required(login_url='login')
@@ -99,4 +97,7 @@ def edit_booking(request, booking_id):
         'booking': booking,
         'tours': tours
     })
+    
+    
+
 

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            min-height: 100vh;
+            background:
+                linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e");
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .payment-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 550px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+
+        .payment-title {
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1d3557;
+        }
+
+        .amount-box {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .payment-method {
+            border: 2px solid #eee;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .payment-method:hover {
+            border-color: #ff5722;
+            background: #fff5f0;
+        }
+
+        .btn-pay {
+            background: linear-gradient(120deg, #ff9800, #ff5722);
+            border: none;
+            border-radius: 30px;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .btn-pay:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="payment-card">
+
+    <h3 class="payment-title">Complete Your Payment</h3>
+
+    <div class="amount-box">
+        <h5>{{ booking.tour.title }}</h5>
+        <p>Seats: {{ booking.seats_booked }}</p>
+        <h4>💰 Total: ₹{{ tour.price }}</h4>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="payment-method">
+            <input type="radio" name="method" value="upi" required>
+            UPI (Google Pay / PhonePe / Paytm)
+        </div>
+
+        <div class="payment-method">
+            <input type="radio" name="method" value="card">
+            Credit / Debit Card
+        </div>
+
+        <div class="payment-method">
+            <input type="radio" name="method" value="netbanking">
+            Net Banking
+        </div>
+
+        <div class="payment-method">
+            <input type="radio" name="method" value="cod">
+            Pay Later (On Arrival)
+        </div>
+
+        <a href="{% url 'my_bookings' %}" class="btn btn-pay w-100 text-white mt-3">
+            Pay Now
+        </a>
+    </form>
+
+</div>
+
+</body>
+</html>

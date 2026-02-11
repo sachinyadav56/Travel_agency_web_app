@@ -1,74 +1,194 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>{{ tour.title }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        .gallery-img {
-            height: 200px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', sans-serif;
         }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: rgba(0,0,0,0.7) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            height: 65vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                        url("{{ tour.images.first.image.url }}") center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        /* ===== INFO CARDS ===== */
+        .info-card {
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .price-badge {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ff5722;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .btn-book {
+            background: linear-gradient(120deg, #ff9800, #ff5722);
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 12px;
+            transition: 0.3s;
+        }
+
+        .btn-book:hover {
+            opacity: 0.9;
+        }
+
+        .btn-back {
+            border-radius: 30px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* ===== DESCRIPTION ===== */
+        .description h4 {
+            font-weight: 700;
+            color: #1d3557;
+        }
+
+        .description p {
+            font-size: 1rem;
+            color: #495057;
+            line-height: 1.7;
+        }
+
+        /* ===== TOUR DETAILS ===== */
+        .tour-detail p {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .tour-detail i {
+            color: #ff5722;
+            margin-right: 8px;
+        }
+
+        /* ===== GALLERY ===== */
+        .gallery-img {
+            height: 220px;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
         .gallery-img:hover {
             transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
         }
+
+        h4.gallery-title {
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #1d3557;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+
     </style>
 </head>
+
 <body>
 
-<nav class="navbar navbar-dark bg-dark">
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark fixed-top">
     <div class="container">
         <a class="navbar-brand fw-bold" href="/">Travel Agency</a>
     </div>
 </nav>
 
-<div class="container mt-5">
-
-    <h2 class="mb-2 fw-bold">{{ tour.title }}</h2>
-    <p class="text-muted">{{ tour.destination }}</p>
-
-    <!-- IMAGE GALLERY (6 Images) -->
-    <div class="row mb-4">
-        {% for img in tour.images.all|slice:":6" %}
-        <div class="col-md-4 col-sm-6 mb-3">
-            <img src="{{ img.image.url }}"
-                 class="img-fluid rounded shadow-sm gallery-img w-100">
-        </div>
-        {% empty %}
-        <p class="text-center">No images available.</p>
-        {% endfor %}
+<!-- HERO -->
+<section class="hero mb-5">
+    <div class="container">
+        <h1>{{ tour.title }}</h1>
     </div>
+</section>
 
-    <!-- TOUR DETAILS -->
+<div class="container mb-5">
+
     <div class="row">
+        <!-- LEFT COLUMN: Description -->
         <div class="col-md-8">
+            <div class="card info-card p-4 mb-4 description">
+                <h4>Description</h4>
+                <p>{{ tour.description }}</p>
+            </div>
+        </div>
 
-            <h5>Description</h5>
-            <p>{{ tour.description }}</p>
+        <!-- RIGHT COLUMN: Tour Info & Booking -->
+        <div class="col-md-4">
+            <div class="card info-card p-4 tour-detail">
+                <h5 class="mb-3">Tour Details</h5>
 
-            <ul class="list-group mb-4">
-                <li class="list-group-item">
-                    Destination: <strong>{{ tour.destination }}</strong>
-                </li>
-                <li class="list-group-item">
-                    Duration: <strong>{{ tour.duration_days }} days </strong>
-                </li>
-                <li class="list-group-item">
-                    Price: <strong>₹ {{ tour.price }}</strong>
-                </li>
-            </ul>
+                <p><i class="fas fa-map-marker-alt"></i> <strong>Destination:</strong> {{ tour.destination }}</p>
+                <p><i class="fas fa-clock"></i> <strong>Duration:</strong> {{ tour.duration_days }} days</p>
+                <p class="price-badge">₹ {{ tour.price }}</p>
 
-            <div class="d-flex gap-3">
-                <a href="/book/{{ tour.id }}/" class="btn btn-success btn-lg">
-                    Book Now
+                <a href="/book/{{ tour.id }}/" class="btn btn-book w-100 mt-3">
+                    Book Now <i class="fas fa-arrow-right ms-2"></i>
                 </a>
-                <a href="/" class="btn btn-secondary btn-lg">
-                    Back
+
+                <a href="{% url 'tour_list' %}" class="btn btn-back btn-outline-secondary w-100 mt-2">
+                    Back to Tours
                 </a>
             </div>
-
         </div>
+    </div>
+
+    <!-- IMAGE GALLERY -->
+    <h4 class="gallery-title">Tour Gallery</h4>
+    <div class="row">
+        {% for img in tour.images.all|slice:":6" %}
+        <div class="col-md-4 col-sm-6 mb-4">
+            <img src="{{ img.image.url }}" class="w-100 gallery-img">
+        </div>
+        {% empty %}
+        <p class="text-muted">No images available.</p>
+        {% endfor %}
     </div>
 
 </div>
