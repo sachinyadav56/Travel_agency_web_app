@@ -46,10 +46,62 @@
 
         .amount-box {
             background: #f1f5f9;
-            padding: 15px;
+            padding: 20px;
             border-radius: 12px;
             text-align: center;
             margin-bottom: 20px;
+        }
+
+        .amount-box h5 {
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .price-detail {
+            color: #666;
+            font-size: 1rem;
+            margin: 8px 0;
+            font-weight: 500;
+        }
+
+        .price-detail .label {
+            display: inline-block;
+            width: 150px;
+            text-align: left;
+            color: #333;
+        }
+
+        .price-detail .value {
+            display: inline-block;
+            font-weight: 700;
+            color: #ff5722;
+        }
+
+        .total-divider {
+            border: none;
+            border-top: 2px solid #ddd;
+            margin: 12px 0;
+        }
+
+        .total-price {
+            color: #28a745;
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-top: 10px;
+        }
+
+        .total-price .label {
+            display: inline-block;
+            width: 150px;
+            text-align: left;
+            color: #333;
+        }
+
+        .total-price .amount {
+            display: inline-block;
+            color: #28a745;
         }
 
         .payment-method {
@@ -75,6 +127,11 @@
             margin-right: 10px;
         }
 
+        .form-check-label {
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+
         .btn-pay {
             background: linear-gradient(120deg, #ff9800, #ff5722);
             border: none;
@@ -82,10 +139,13 @@
             padding: 12px;
             font-size: 1rem;
             font-weight: 600;
+            color: white !important;
+            transition: 0.3s;
         }
 
         .btn-pay:hover {
             opacity: 0.9;
+            transform: translateY(-2px);
         }
 
         /* QR Code Section */
@@ -100,6 +160,29 @@
 
         .qr-section.show {
             display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .qr-section h5 {
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .qr-section p {
+            color: #666;
+            margin-bottom: 15px;
         }
 
         .qr-section img {
@@ -108,6 +191,8 @@
             border: 3px solid #ff5722;
             border-radius: 12px;
             margin: 15px 0;
+            padding: 10px;
+            background: white;
         }
 
         .qr-instructions {
@@ -120,17 +205,34 @@
             font-size: 0.9rem;
         }
 
-        .payment-success-section {
-            display: none;
-            text-align: center;
-            background: #d4edda;
-            padding: 20px;
-            border-radius: 12px;
-            color: #155724;
+        .qr-instructions strong {
+            display: block;
+            margin-bottom: 10px;
         }
 
-        .payment-success-section.show {
-            display: block;
+        .qr-instructions ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .qr-instructions li {
+            margin: 5px 0;
+        }
+
+        .btn-success {
+            background-color: #28a745 !important;
+        }
+
+        .btn-success:hover {
+            background-color: #218838 !important;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d !important;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268 !important;
         }
 
         /* Mobile adjustments */
@@ -146,6 +248,27 @@
             .qr-section img {
                 max-width: 250px;
             }
+
+            .amount-box {
+                padding: 15px;
+            }
+
+            .total-price {
+                font-size: 1.2rem;
+            }
+
+            .price-detail .label,
+            .total-price .label {
+                display: block;
+                width: 100%;
+                text-align: center;
+                margin-bottom: 5px;
+            }
+
+            .price-detail .value,
+            .total-price .amount {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -157,17 +280,34 @@
 
         <h3 class="payment-title">Complete Your Payment</h3>
 
+        <!-- Amount Summary -->
         <div class="amount-box">
             <h5>{{ booking.tour.title }}</h5>
-            <h4 class="mb-1">Seats: {{ booking.seats_booked }}</h4>
-            <h4>Price per seat: ₹{{ booking.tour.price }}</h4>
-            <hr>
-            <h3 class="text-success">Total Amount: ₹<strong>{{ booking.tour.price|add:0 }}</strong></h3>
+            
+            <div class="price-detail">
+                <span class="label">Price per seat:</span>
+                <span class="value">₹{{ booking.tour.price }}</span>
+            </div>
+            
+            <div class="price-detail">
+                <span class="label">Number of seats:</span>
+                <span class="value">{{ booking.seats_booked }}</span>
+            </div>
+
+            <hr class="total-divider">
+            
+            <div class="total-price">
+                <span class="label">Total Amount:</span>
+                <span class="amount">₹{{ total_amount }}</span>
+            </div>
         </div>
 
         <!-- Payment Method Selection Form -->
+        {% if not show_qr %}
         <form method="POST" id="paymentForm">
             {% csrf_token %}
+
+            <h6 style="color: #333; margin-bottom: 15px;">Select Payment Method:</h6>
 
             <div class="payment-method form-check">
                 <input class="form-check-input" type="radio" name="method" value="upi" id="upi" required>
@@ -183,38 +323,43 @@
                 </label>
             </div>
 
-            <button type="submit" class="btn btn-pay w-100 text-white mt-3" id="submitBtn">
+            <button type="submit" class="btn btn-pay w-100 mt-3" id="submitBtn">
                 Proceed
             </button>
 
         </form>
+        {% endif %}
 
         <!-- QR Code Display (UPI) -->
         {% if show_qr %}
         <div class="qr-section show">
-            <h5>Scan to Pay ₹{{ total_amount }}</h5>
-            <p>Open your UPI app and scan this QR code</p>
+            <h5>🔐 Scan to Pay</h5>
+            <p>Amount to pay: <strong>₹{{ total_amount }}</strong></p>
             
             <img src="data:image/png;base64,{{ qr_code }}" alt="UPI QR Code">
             
             <div class="qr-instructions">
-                <strong>📋 Instructions:</strong>
-                <ul class="mb-0 mt-2">
-                    <li>Open Google Pay, PhonePe, or Paytm</li>
-                    <li>Scan this QR code</li>
-                    <li>Verify the amount: ₹{{ total_amount }}</li>
-                    <li>Complete the payment</li>
-                    <li>After payment, click "Confirm Payment"</li>
+                <strong>📋 How to Pay:</strong>
+                <ul>
+                    <li>✅ Open Google Pay, PhonePe, or Paytm</li>
+                    <li>✅ Tap "Scan QR Code"</li>
+                    <li>✅ Scan the QR code above</li>
+                    <li>✅ Verify the amount: ₹{{ total_amount }}</li>
+                    <li>✅ Complete the payment</li>
+                    <li>✅ Click "Confirm Payment" below</li>
                 </ul>
             </div>
 
-            <button type="button" class="btn btn-success w-100 mt-3" onclick="confirmPayment()">
+            <a href="{% url 'payment_success' booking.id %}" class="btn btn-success w-100 mt-3">
                 ✅ Confirm Payment
-            </button>
-
-            <a href="{% url 'payment_page' booking.id %}" class="btn btn-secondary w-100 mt-2">
-                ← Back to Payment Methods
             </a>
+
+            <form method="POST" class="mt-2">
+                {% csrf_token %}
+                <button type="submit" name="method" value="" class="btn btn-secondary w-100">
+                    ← Change Payment Method
+                </button>
+            </form>
         </div>
         {% endif %}
 
@@ -225,18 +370,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    function confirmPayment() {
-        // After user confirms payment, redirect to success page
-        window.location.href = "{% url 'payment_success' booking.id %}";
-    }
-
-    // Show/hide payment method labels
+    // Update button text based on selected method
     document.querySelectorAll('input[name="method"]').forEach(radio => {
         radio.addEventListener('change', function() {
+            const submitBtn = document.getElementById('submitBtn');
             if (this.value === 'upi') {
-                document.getElementById('submitBtn').textContent = 'Generate QR Code';
+                submitBtn.textContent = '📱 Generate QR Code';
             } else if (this.value === 'cod') {
-                document.getElementById('submitBtn').textContent = 'Confirm Booking';
+                submitBtn.textContent = '✅ Confirm Booking';
             }
         });
     });
