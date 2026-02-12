@@ -3,28 +3,37 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from .models import Profile
+
 
 
 def register_view(request):
     if request.method == "POST":
         username = request.POST['username']
         email = request.POST['email']
+        mobile = request.POST['mobile']
         password = request.POST['password']
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists")
             return redirect('register')
 
+        # Create user
         user = User.objects.create_user(
             username=username,
             email=email,
             password=password
         )
         user.save()
+
+        # Create Profile with mobile number
+        Profile.objects.create(user=user, mobile=mobile)
+
         messages.success(request, "Account created successfully")
         return redirect('login')
 
     return render(request, 'register.html')
+
 
 
 def login_view(request):

@@ -59,49 +59,11 @@
             font-size: 1.2rem;
         }
 
-        .price-detail {
-            color: #666;
-            font-size: 1rem;
-            margin: 8px 0;
-            font-weight: 500;
-        }
-
-        .price-detail .label {
-            display: inline-block;
-            width: 150px;
-            text-align: left;
-            color: #333;
-        }
-
-        .price-detail .value {
-            display: inline-block;
-            font-weight: 700;
-            color: #ff5722;
-        }
-
-        .total-divider {
-            border: none;
-            border-top: 2px solid #ddd;
-            margin: 12px 0;
-        }
-
         .total-price {
             color: #28a745;
             font-weight: 700;
-            font-size: 1.4rem;
-            margin-top: 10px;
-        }
-
-        .total-price .label {
-            display: inline-block;
-            width: 150px;
-            text-align: left;
-            color: #333;
-        }
-
-        .total-price .amount {
-            display: inline-block;
-            color: #28a745;
+            font-size: 2rem;
+            margin: 10px 0;
         }
 
         .payment-method {
@@ -254,20 +216,11 @@
             }
 
             .total-price {
-                font-size: 1.2rem;
+                font-size: 1.5rem;
             }
 
-            .price-detail .label,
-            .total-price .label {
-                display: block;
-                width: 100%;
-                text-align: center;
-                margin-bottom: 5px;
-            }
-
-            .price-detail .value,
-            .total-price .amount {
-                display: block;
+            .tour-name{
+                font-size: 1.3rem;
             }
         }
     </style>
@@ -280,26 +233,10 @@
 
         <h3 class="payment-title">Complete Your Payment</h3>
 
-        <!-- Amount Summary -->
+        <!-- Amount Summary - Only Total -->
         <div class="amount-box">
-            <h5>{{ booking.tour.title }}</h5>
-            
-            <div class="price-detail">
-                <span class="label">Price per seat:</span>
-                <span class="value">₹{{ booking.tour.price }}</span>
-            </div>
-            
-            <div class="price-detail">
-                <span class="label">Number of seats:</span>
-                <span class="value">{{ booking.seats_booked }}</span>
-            </div>
-
-            <hr class="total-divider">
-            
-            <div class="total-price">
-                <span class="label">Total Amount:</span>
-                <span class="amount">₹{{ total_amount }}</span>
-            </div>
+            <h3 class ="tour-name">{{ booking.tour.title }}</h3>
+            <div class="total-price">₹{{ total_amount }}</div>
         </div>
 
         <!-- Payment Method Selection Form -->
@@ -312,14 +249,14 @@
             <div class="payment-method form-check">
                 <input class="form-check-input" type="radio" name="method" value="upi" id="upi" required>
                 <label class="form-check-label" for="upi">
-                    📱 UPI (Google Pay / PhonePe / Paytm)
+                     UPI (Google Pay / PhonePe / Paytm)
                 </label>
             </div>
 
             <div class="payment-method form-check">
                 <input class="form-check-input" type="radio" name="method" value="cod" id="cod">
                 <label class="form-check-label" for="cod">
-                    💳 Pay Later (On Arrival)
+                     Pay Later (On Arrival)
                 </label>
             </div>
 
@@ -375,9 +312,9 @@
         radio.addEventListener('change', function() {
             const submitBtn = document.getElementById('submitBtn');
             if (this.value === 'upi') {
-                submitBtn.textContent = '📱 Generate QR Code';
+                submitBtn.textContent = ' Generate QR Code';
             } else if (this.value === 'cod') {
-                submitBtn.textContent = '✅ Confirm Booking';
+                submitBtn.textContent = 'Confirm Booking';
             }
         });
     });

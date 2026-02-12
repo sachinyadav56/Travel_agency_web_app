@@ -88,15 +88,6 @@
 
     <h3 class="edit-title">Edit Your Booking</h3>
 
-    <!-- Messages -->
-    {% if messages %}
-        {% for message in messages %}
-            <div id="auto-alert" class="alert alert-{{ message.tags }} fade show">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-
     <form method="POST">
         {% csrf_token %}
 
@@ -136,18 +127,6 @@
         </div>
     </form>
 </div>
-
-<!-- Auto-hide message -->
-<script>
-    setTimeout(function () {
-        const alertBox = document.getElementById("auto-alert");
-        if (alertBox) {
-            alertBox.classList.remove("show");
-            alertBox.classList.add("fade");
-            setTimeout(() => alertBox.remove(), 500);
-        }
-    }, 3000);
-</script>
 
 </body>
 </html>

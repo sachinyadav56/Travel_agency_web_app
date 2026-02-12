@@ -19,15 +19,15 @@ def book_tour(request, tour_id):
         booking = Booking.objects.create(
             user=request.user,
             tour=tour,
-            seats_booked=seats  # ✅ ADD THIS LINE - IMPORTANT!
+            seats_booked=seats  # ✅ IMPORTANT: Save the seats
         )
 
         # Reduce available seats
         tour.available_seats -= seats
         tour.save()
 
-        # Redirect to payment page
-        return redirect('payment_page', booking.id)
+        # ✅ Redirect to payment page (NOT my_bookings)
+        return redirect('payment_page', booking_id=booking.id)
 
     return render(request, 'book_tour.html', {'tour': tour})
 
@@ -50,7 +50,7 @@ def cancel_booking(request, booking_id):
 
     booking.delete()
 
-    messages.success(request, "Booking cancelled successfully")
+    messages.success(request, "🗑️ Booking cancelled successfully")
     return redirect('my_bookings')
 
 
@@ -71,7 +71,7 @@ def edit_booking(request, booking_id):
 
         # Step 2: check availability
         if new_seats > new_tour.available_seats:
-            messages.error(request, "Not enough seats available")
+            messages.error(request, "❌ Not enough seats available")
             return redirect('edit_booking', booking_id=booking.id)
 
         # Step 3: update booking
@@ -83,7 +83,8 @@ def edit_booking(request, booking_id):
         new_tour.available_seats -= new_seats
         new_tour.save()
 
-        messages.success(request, "Booking updated successfully")
+        # ✅ Show success message on my_bookings page
+        messages.success(request, "✏️ Booking updated successfully")
         return redirect('my_bookings')
 
     return render(request, 'edit_booking.html', {
