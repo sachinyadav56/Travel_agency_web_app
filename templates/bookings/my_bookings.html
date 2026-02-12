@@ -9,10 +9,7 @@
 
     <style>
     body {
-        /* Background travel image */
-
         background: url('https://cdn.pixabay.com/photo/2017/06/06/22/55/lake-2382936_1280.jpg') no-repeat center center fixed;
-
         background-size: cover;
         min-height: 100vh;
         color: #fff;
@@ -20,18 +17,17 @@
         position: relative;
     }
 
-    /* Optional overlay for better readability */
     body::before {
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0, 0, 0, 0.5); /* dark overlay */
+        background: rgba(0, 0, 0, 0.5);
         z-index: 0;
     }
 
     .container {
         position: relative;
-        z-index: 1; /* ensures content is above overlay */
+        z-index: 1;
     }
 
     .page-title {
@@ -43,7 +39,7 @@
     .card {
         border: none;
         border-radius: 15px;
-        background: rgba(255, 255, 255, 0.9); /* semi-transparent card */
+        background: rgba(255, 255, 255, 0.9);
         color: #000;
     }
 
@@ -51,11 +47,18 @@
         font-size: 14px;
     }
 
-    /* Navbar tweak */
+    .badge-paid {
+        background-color: #28a745 !important;
+    }
+
+    .badge-unpaid {
+        background-color: #ffc107 !important;
+    }
+
     .navbar {
         background: rgba(0, 0, 0, 0.7) !important;
     }
-</style>
+    </style>
 
 </head>
 
@@ -63,7 +66,7 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-dark bg-dark px-4">
-    <a  class="navbar-brand mb-0 h1" href="/">Travel Agency</a>
+    <a class="navbar-brand mb-0 h1" href="/">Travel Agency</a>
 </nav>
 
 <!-- Main Container -->
@@ -87,7 +90,7 @@
                             <th>Tour</th>
                             <th>Seats</th>
                             <th>Date</th>
-                            <th>Payment</th>
+                            <th>Payment Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -112,12 +115,16 @@
 
                             <td>
                                 {% if booking.paid %}
-                                    <span class="badge bg-success">
-                                        Paid 
+                                    <span class="badge badge-paid">
+                                        ✅ Paid ({{ booking.payment_method|upper }})
+                                    </span>
+                                {% elif booking.payment_method == 'cod' %}
+                                    <span class="badge badge-unpaid">
+                                        📋 Pay on Arrival
                                     </span>
                                 {% else %}
-                                    <span class="badge bg-warning text-dark">
-                                        Pay Later
+                                    <span class="badge badge-unpaid">
+                                        ⏳ Pending Payment
                                     </span>
                                     <br>
                                     <a href="{% url 'payment_page' booking.id %}"
@@ -130,13 +137,13 @@
                             <td>
                                 <a href="{% url 'edit_booking' booking.id %}"
                                    class="btn btn-sm btn-outline-primary">
-                                    ✏️
+                                    ✏️ Edit
                                 </a>
 
                                 <a href="{% url 'cancel_booking' booking.id %}"
                                    class="btn btn-sm btn-outline-danger"
                                    onclick="return confirm('Cancel this booking?');">
-                                    🗑
+                                    🗑 Delete
                                 </a>
                             </td>
 

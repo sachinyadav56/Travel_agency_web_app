@@ -58,11 +58,17 @@
             padding: 12px 15px;
             margin-bottom: 12px;
             transition: 0.3s;
+            cursor: pointer;
         }
 
         .payment-method:hover {
             border-color: #ff5722;
             background: #fff5f0;
+        }
+
+        .payment-method input[type="radio"]:checked + label {
+            color: #ff5722;
+            font-weight: 600;
         }
 
         .form-check-input {
@@ -82,6 +88,51 @@
             opacity: 0.9;
         }
 
+        /* QR Code Section */
+        .qr-section {
+            display: none;
+            text-align: center;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .qr-section.show {
+            display: block;
+        }
+
+        .qr-section img {
+            max-width: 300px;
+            height: auto;
+            border: 3px solid #ff5722;
+            border-radius: 12px;
+            margin: 15px 0;
+        }
+
+        .qr-instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: left;
+            color: #1976d2;
+            font-size: 0.9rem;
+        }
+
+        .payment-success-section {
+            display: none;
+            text-align: center;
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 12px;
+            color: #155724;
+        }
+
+        .payment-success-section.show {
+            display: block;
+        }
+
         /* Mobile adjustments */
         @media (max-width: 576px) {
             .payment-card {
@@ -90,6 +141,10 @@
 
             .payment-title {
                 font-size: 1.4rem;
+            }
+
+            .qr-section img {
+                max-width: 250px;
             }
         }
     </style>
@@ -105,34 +160,87 @@
         <div class="amount-box">
             <h5>{{ booking.tour.title }}</h5>
             <h4 class="mb-1">Seats: {{ booking.seats_booked }}</h4>
-            <h4>Total: ₹{{ booking.tour.price }}</h4>
+            <h4>Price per seat: ₹{{ booking.tour.price }}</h4>
+            <hr>
+            <h3 class="text-success">Total Amount: ₹<strong>{{ booking.tour.price|add:0 }}</strong></h3>
         </div>
 
-        <form method="POST">
+        <!-- Payment Method Selection Form -->
+        <form method="POST" id="paymentForm">
             {% csrf_token %}
 
             <div class="payment-method form-check">
-                <input class="form-check-input" type="radio" name="method" value="upi" required>
-                <label class="form-check-label">
-                    UPI (Google Pay / PhonePe / Paytm)
+                <input class="form-check-input" type="radio" name="method" value="upi" id="upi" required>
+                <label class="form-check-label" for="upi">
+                    📱 UPI (Google Pay / PhonePe / Paytm)
                 </label>
             </div>
 
             <div class="payment-method form-check">
-                <input class="form-check-input" type="radio" name="method" value="cod">
-                <label class="form-check-label">
-                    Pay Later (On Arrival)
+                <input class="form-check-input" type="radio" name="method" value="cod" id="cod">
+                <label class="form-check-label" for="cod">
+                    💳 Pay Later (On Arrival)
                 </label>
             </div>
 
-            <button type="submit" class="btn btn-pay w-100 text-white mt-3">
-                Pay Now
+            <button type="submit" class="btn btn-pay w-100 text-white mt-3" id="submitBtn">
+                Proceed
             </button>
 
         </form>
 
+        <!-- QR Code Display (UPI) -->
+        {% if show_qr %}
+        <div class="qr-section show">
+            <h5>Scan to Pay ₹{{ total_amount }}</h5>
+            <p>Open your UPI app and scan this QR code</p>
+            
+            <img src="data:image/png;base64,{{ qr_code }}" alt="UPI QR Code">
+            
+            <div class="qr-instructions">
+                <strong>📋 Instructions:</strong>
+                <ul class="mb-0 mt-2">
+                    <li>Open Google Pay, PhonePe, or Paytm</li>
+                    <li>Scan this QR code</li>
+                    <li>Verify the amount: ₹{{ total_amount }}</li>
+                    <li>Complete the payment</li>
+                    <li>After payment, click "Confirm Payment"</li>
+                </ul>
+            </div>
+
+            <button type="button" class="btn btn-success w-100 mt-3" onclick="confirmPayment()">
+                ✅ Confirm Payment
+            </button>
+
+            <a href="{% url 'payment_page' booking.id %}" class="btn btn-secondary w-100 mt-2">
+                ← Back to Payment Methods
+            </a>
+        </div>
+        {% endif %}
+
     </div>
 </div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function confirmPayment() {
+        // After user confirms payment, redirect to success page
+        window.location.href = "{% url 'payment_success' booking.id %}";
+    }
+
+    // Show/hide payment method labels
+    document.querySelectorAll('input[name="method"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'upi') {
+                document.getElementById('submitBtn').textContent = 'Generate QR Code';
+            } else if (this.value === 'cod') {
+                document.getElementById('submitBtn').textContent = 'Confirm Booking';
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
