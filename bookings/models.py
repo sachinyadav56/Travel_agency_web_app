@@ -18,7 +18,7 @@ class Booking(models.Model):
         choices=PAYMENT_CHOICES,
         default='arrival'
     )
-
+     
     paid = models.BooleanField(default=False)
 
     def __str__(self):

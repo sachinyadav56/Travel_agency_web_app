@@ -19,40 +19,52 @@
         .hero {
             background: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e") no-repeat center center/cover;
             min-height: 100vh;
-            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            color: white;
+            text-align: center;
         }
 
         .hero-overlay {
-            background: rgba(0, 0, 0, 0.6);
-            width: 100%;
-            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.4); /* semi-transparent overlay for readability */
+            padding: 40px 20px;
+            border-radius: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            padding: 20px;
         }
 
-        /* Remove dropdown arrow */
-        .dropdown-toggle::after {
-            display: none !important;
+        .hero-overlay h1 {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .hero-overlay p {
+            font-size: 1.3rem;
+            margin-top: 10px;
+        }
+
+        .btn-explore {
+            margin-top: 30px;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            border-radius: 8px;
         }
 
         /* Adjust hero text for small screens */
         @media (max-width: 576px) {
             .hero-overlay h1 {
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
 
             .hero-overlay p {
                 font-size: 1rem;
             }
 
-            .btn-lg {
+            .btn-explore {
                 padding: 10px 20px;
                 font-size: 1rem;
             }
@@ -79,45 +91,26 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarContent">
-            <div class="ms-auto">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 {% if user.is_authenticated %}
-                <div class="dropdown text-end">
-                    <a class="nav-link dropdown-toggle text-light fw-semibold"
-                       href="#"
-                       role="button"
-                       data-bs-toggle="dropdown">
-                        {{ user.username }}
-                    </a>
-
-                    <ul class="dropdown-menu dropdown-menu-end mt-2">
-                        <li>
-                            <a class="dropdown-item" href="{% url 'profile' %}">
-                                Profile
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{% url 'my_bookings' %}">
-                                My Bookings
-                            </a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item text-danger fw-semibold"
-                               href="{% url 'logout' %}">
-                                Logout
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                    <li class="nav-item">
+                        <a class="nav-link text-light fw-semibold" href="{% url 'profile' %}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light fw-semibold" href="{% url 'my_bookings' %}">My Bookings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger fw-semibold" href="{% url 'logout' %}">Logout</a>
+                    </li>
                 {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm me-2 mt-2 mt-lg-0">
-                        Login
-                    </a>
-                    <a href="{% url 'register' %}" class="btn btn-outline-light btn-sm mt-2 mt-lg-0">
-                        Register
-                    </a>
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link text-light">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'register' %}" class="nav-link text-light">Register</a>
+                    </li>
                 {% endif %}
-            </div>
+            </ul>
         </div>
     </div>
 </nav>
@@ -128,7 +121,7 @@
         <h1 class="display-4 fw-bold">Explore the World with Us</h1>
         <p class="lead">Best tour packages at affordable prices</p>
 
-        <a href="{% url 'tour_list' %}" class="btn btn-warning btn-lg mt-4">
+        <a href="{% url 'tour_list' %}" class="btn btn-warning btn-explore">
             Explore Tours
         </a>
     </div>

@@ -1,6 +1,7 @@
-from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from bookings.models import Booking
+from django.contrib import messages
+
 from django.contrib.auth.decorators import login_required
 
 
@@ -23,7 +24,7 @@ def payment_page(request, booking_id):
         booking.payment_method = "online"   # ✅ important
         booking.save()
 
-        messages.success(request, "Payment successful! 🎉")
+        messages.success(request, "Payment successful! ")
         return redirect('my_bookings')
 
     return render(request, 'payment_page.html', {'booking': booking})

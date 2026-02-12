@@ -1,72 +1,166 @@
-<div class="table-responsive">
-    <table class="table text-center align-middle">
-        <thead>
-            <tr>
-                <th>Tour</th>
-                <th>Seats</th>
-                <th>Date</th>
-                <th>Payment</th>
-                <th>Action</th>
-            </tr>
-        </thead>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Bookings | Travel Agency</title>
 
-        <tbody>
-        {% for booking in bookings %}
-            <tr>
-                <td class="fw-semibold">
-                    {{ booking.tour.title }}
-                </td>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-                <td>
-                    <span class="seat-badge">
-                        {{ booking.seats_booked }}
-                    </span>
-                </td>
+    <style>
+    body {
+        /* Background travel image */
 
-                <td>
-                    {{ booking.booking_date|date:"d M Y" }}
-                </td>
+        background: url('https://cdn.pixabay.com/photo/2017/06/06/22/55/lake-2382936_1280.jpg') no-repeat center center fixed;
 
-                <!-- ✅ PAYMENT STATUS COLUMN -->
-                <td>
-                    {% if booking.paid %}
-                        <span class="badge bg-success px-3 py-2">
-                            Paid ✅
-                        </span>
-                    {% else %}
-                        <span class="badge bg-warning text-dark px-3 py-2">
-                            Pay Later (On Arrival)
-                        </span>
-                        <br>
-                        <a href="{% url 'payment_page' booking.id %}"
-                           class="btn btn-sm btn-primary mt-2">
-                           Pay Now
-                        </a>
-                    {% endif %}
-                </td>
+        background-size: cover;
+        min-height: 100vh;
+        color: #fff;
+        font-family: 'Segoe UI', sans-serif;
+        position: relative;
+    }
 
-                <td>
-                    <div class="action-buttons d-flex justify-content-center flex-wrap gap-2">
-                        <a href="{% url 'edit_booking' booking.id %}"
-                           class="btn btn-edit action-btn">
-                            ✏️
-                        </a>
+    /* Optional overlay for better readability */
+    body::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0, 0, 0, 0.5); /* dark overlay */
+        z-index: 0;
+    }
 
-                        <a href="{% url 'cancel_booking' booking.id %}"
-                           class="btn btn-cancel action-btn"
-                           onclick="return confirm('Cancel this booking?');">
-                            🗑
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        {% empty %}
-            <tr>
-                <td colspan="5" class="text-muted text-center">
-                    No bookings yet 🌴
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    .container {
+        position: relative;
+        z-index: 1; /* ensures content is above overlay */
+    }
+
+    .page-title {
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #fff;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.9); /* semi-transparent card */
+        color: #000;
+    }
+
+    .badge {
+        font-size: 14px;
+    }
+
+    /* Navbar tweak */
+    .navbar {
+        background: rgba(0, 0, 0, 0.7) !important;
+    }
+</style>
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark bg-dark px-4">
+    <a  class="navbar-brand mb-0 h1" href="/">Travel Agency</a>
+</nav>
+
+<!-- Main Container -->
+<div class="container mt-5 mb-5">
+
+    <!-- Page Heading -->
+    <div class="text-center mb-4">
+        <h2 class="page-title">My Tour Bookings</h2>
+        <p class="text-muted">Manage your reserved trips</p>
+    </div>
+
+    <!-- Booking Table -->
+    <div class="card shadow">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center align-middle">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Tour</th>
+                            <th>Seats</th>
+                            <th>Date</th>
+                            <th>Payment</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for booking in bookings %}
+                        <tr>
+
+                            <td class="fw-semibold">
+                                {{ booking.tour.title }}
+                            </td>
+
+                            <td>
+                                <span class="badge bg-primary">
+                                    {{ booking.seats_booked }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {{ booking.booking_date|date:"d M Y" }}
+                            </td>
+
+                            <td>
+                                {% if booking.paid %}
+                                    <span class="badge bg-success">
+                                        Paid 
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">
+                                        Pay Later
+                                    </span>
+                                    <br>
+                                    <a href="{% url 'payment_page' booking.id %}"
+                                       class="btn btn-sm btn-primary mt-2">
+                                        Pay Now
+                                    </a>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <a href="{% url 'edit_booking' booking.id %}"
+                                   class="btn btn-sm btn-outline-primary">
+                                    ✏️
+                                </a>
+
+                                <a href="{% url 'cancel_booking' booking.id %}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('Cancel this booking?');">
+                                    🗑
+                                </a>
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="py-4 text-muted">
+                                No bookings yet 🌴
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
 </div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

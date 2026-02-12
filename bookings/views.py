@@ -55,11 +55,7 @@ def cancel_booking(request, booking_id):
     return redirect('my_bookings')
 
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .models import Booking
-from tours.models import TourPackage
+
 
 @login_required
 def edit_booking(request, booking_id):

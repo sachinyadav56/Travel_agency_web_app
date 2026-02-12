@@ -122,11 +122,7 @@
         <span>🪑 {{ tour.available_seats }} Seats Left</span>
     </div>
 
-    {% for message in messages %}
-        <div class="alert alert-danger">
-            {{ message }}
-        </div>
-    {% endfor %}
+    
 
     <form method="POST">
         {% csrf_token %}
