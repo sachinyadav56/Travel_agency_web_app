@@ -104,8 +104,8 @@
 
         <div class="amount-box">
             <h5>{{ booking.tour.title }}</h5>
-            <p class="mb-1">Seats: {{ booking.seats_booked }}</p>
-            <h4>💰 Total: ₹{{ tour.price }}</h4>
+            <h4 class="mb-1">Seats: {{ booking.seats_booked }}</h4>
+            <h4>Total: ₹{{ booking.tour.price }}</h4>
         </div>
 
         <form method="POST">
@@ -115,20 +115,6 @@
                 <input class="form-check-input" type="radio" name="method" value="upi" required>
                 <label class="form-check-label">
                     UPI (Google Pay / PhonePe / Paytm)
-                </label>
-            </div>
-
-            <div class="payment-method form-check">
-                <input class="form-check-input" type="radio" name="method" value="card">
-                <label class="form-check-label">
-                    Credit / Debit Card
-                </label>
-            </div>
-
-            <div class="payment-method form-check">
-                <input class="form-check-input" type="radio" name="method" value="netbanking">
-                <label class="form-check-label">
-                    Net Banking
                 </label>
             </div>
 
