@@ -45,6 +45,7 @@
 
     .badge {
         font-size: 14px;
+        padding: 8px 12px;
     }
 
     .badge-paid {
@@ -53,10 +54,36 @@
 
     .badge-unpaid {
         background-color: #ffc107 !important;
+        color: #000 !important;
+    }
+
+    .badge-later {
+        background-color: #17a2b8 !important;
     }
 
     .navbar {
         background: rgba(0, 0, 0, 0.7) !important;
+    }
+
+    .btn-sm {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+
+    /* Disabled button styling */
+    .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .btn-outline-primary:disabled {
+        color: #ccc !important;
+        border-color: #ccc !important;
+    }
+
+    .btn-outline-danger:disabled {
+        color: #ccc !important;
+        border-color: #ccc !important;
     }
     </style>
 
@@ -66,7 +93,7 @@
 
 <!-- Navbar -->
 <nav class="navbar navbar-dark bg-dark px-4">
-    <a class="navbar-brand mb-0 h1" href="/">Travel Agency</a>
+    <a class="navbar-brand mb-0 h1" href="/"> Travel Agency</a>
 </nav>
 
 <!-- Main Container -->
@@ -74,8 +101,8 @@
 
     <!-- Page Heading -->
     <div class="text-center mb-4">
-        <h2 class="page-title">My Tour Bookings</h2>
-        <p class="text-muted">Manage your reserved trips</p>
+        <h2 class="page-title"> My Tour Bookings</h2>
+        <p class="text-white">Manage your reserved trips</p>
     </div>
 
     <!-- Booking Table -->
@@ -89,9 +116,9 @@
                         <tr>
                             <th>Tour</th>
                             <th>Seats</th>
-                            <th>Date</th>
+                            <th>Booking Date</th>
                             <th>Payment Status</th>
-                            <th>Action</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
 
@@ -99,32 +126,38 @@
                     {% for booking in bookings %}
                         <tr>
 
-                            <td class="fw-semibold">
+                            <td class="fw-semibold text-start">
                                 {{ booking.tour.title }}
                             </td>
 
                             <td>
-                                <span class="badge bg-primary">
-                                    {{ booking.seats_booked }}
+                                <span class="badge bg-info">
+                                    {{ booking.seats_booked }} 🪑
                                 </span>
                             </td>
 
                             <td>
-                                {{ booking.booking_date|date:"d M Y" }}
+                                {{ booking.booking_date|date:"d M Y, h:i A" }}
                             </td>
 
+                            <!-- Payment Status Column -->
                             <td>
-                                {% if booking.paid %}
+                                {% if booking.paid and booking.payment_method == 'online' %}
+                                    <!-- ✅ Online Payment Completed -->
                                     <span class="badge badge-paid">
-                                        ✅ Paid ({{ booking.payment_method|upper }})
+                                         Paid
                                     </span>
-                                {% elif booking.payment_method == 'cod' %}
-                                    <span class="badge badge-unpaid">
-                                        📋 Pay on Arrival
+
+                                {% elif booking.payment_method == 'arrival' %}
+                                    <!-- 📋 Pay on Arrival -->
+                                    <span class="badge badge-later">
+                                         Pay on Arrival
                                     </span>
+
                                 {% else %}
+                                    <!-- ⏳ Pending Payment -->
                                     <span class="badge badge-unpaid">
-                                        ⏳ Pending Payment
+                                         Pending Payment
                                     </span>
                                     <br>
                                     <a href="{% url 'payment_page' booking.id %}"
@@ -134,25 +167,45 @@
                                 {% endif %}
                             </td>
 
+                            <!-- Actions -->
                             <td>
-                                <a href="{% url 'edit_booking' booking.id %}"
-                                   class="btn btn-sm btn-outline-primary">
-                                    ✏️ Edit
-                                </a>
+                                <!-- Edit Button - Disabled if Paid -->
+                                {% if booking.paid %}
+                                    <button class="btn btn-sm btn-outline-primary" disabled title="Cannot edit paid booking">
+                                        ✏️ 
+                                    </button>
+                                {% else %}
+                                    <a href="{% url 'edit_booking' booking.id %}"
+                                       class="btn btn-sm btn-outline-primary"
+                                       title="Edit booking">
+                                        ✏️ 
+                                    </a>
+                                {% endif %}
 
-                                <a href="{% url 'cancel_booking' booking.id %}"
-                                   class="btn btn-sm btn-outline-danger"
-                                   onclick="return confirm('Cancel this booking?');">
-                                    🗑 Delete
-                                </a>
+                                <!-- Delete Button - Disabled if Paid -->
+                                {% if booking.paid %}
+                                    <button class="btn btn-sm btn-outline-danger" disabled title="Cannot delete paid booking">
+                                        🗑️ 
+                                    </button>
+                                {% else %}
+                                    <a href="{% url 'cancel_booking' booking.id %}"
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('Are you sure you want to cancel this booking?');"
+                                       title="Cancel booking">
+                                        🗑️
+                                    </a>
+                                {% endif %}
                             </td>
 
                         </tr>
 
                     {% empty %}
                         <tr>
-                            <td colspan="5" class="py-4 text-muted">
-                                No bookings yet 🌴
+                            <td colspan="5" class="py-4">
+                                <p class="text-muted mb-0">No bookings yet 🌴</p>
+                                <a href="{% url 'tour_list' %}" class="btn btn-sm btn-primary mt-2">
+                                    Browse Tours
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}
