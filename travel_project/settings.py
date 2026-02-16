@@ -214,3 +214,5 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 
+ADMIN_SITE = 'travel_project.admin.admin_site'
+

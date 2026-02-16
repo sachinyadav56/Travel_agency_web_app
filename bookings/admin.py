@@ -2,8 +2,7 @@ from django.contrib import admin
 from django.db.models import Sum, F, ExpressionWrapper, DecimalField
 from .models import Booking
 
-Booking.objects.count()
-
+# Use default admin site instead
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
 
@@ -22,12 +21,10 @@ class BookingAdmin(admin.ModelAdmin):
     readonly_fields = ('booking_date',)
     list_per_page = 10
 
-    # ✅ Total price per booking
     def total_price(self, obj):
-        return obj.seats_booked * obj.tour.price
-    total_price.short_description = "Total Price (₹)"
+        return f"₹ {obj.seats_booked * obj.tour.price}"
+    total_price.short_description = "Total Price"
 
-    # ✅ Show total revenue in changelist
     def changelist_view(self, request, extra_context=None):
         response = super().changelist_view(request, extra_context=extra_context)
 
