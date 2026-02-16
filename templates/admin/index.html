@@ -1,0 +1,30 @@
+{% extends "admin/index.html" %}
+
+{% block content %}
+<div class="row">
+
+  <div class="col-lg-4">
+    <div class="card bg-success text-white p-3">
+      <h4>Total Revenue</h4>
+      <h3>₹ {{ total_revenue|default:0 }}</h3>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card bg-primary text-white p-3">
+      <h4>Total Bookings</h4>
+      <h3>{{ total_bookings|default:0 }}</h3>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="card bg-warning text-white p-3">
+      <h4>Total Seats</h4>
+      <h3>{{ total_seats|default:0 }}</h3>
+    </div>
+  </div>
+
+</div>
+
+{{ block.super }}
+{% endblock %}

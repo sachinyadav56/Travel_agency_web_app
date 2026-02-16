@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -156,3 +157,60 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 ALLOWED_HOSTS = ['*']
+
+
+JAZZMIN_SETTINGS = {
+
+    "site_title": "Travel Agency Admin",
+    "site_header": "Travel Agency",
+    "site_brand": "Travel Admin",
+    "welcome_sign": "Welcome to Travel Agency Dashboard",
+
+    "copyright": "Travel Agency Ltd",
+    
+    "site_logo": "images/logo.png",
+    "login_logo": "images/logo.png",
+    "login_logo_dark": "images/logo.png",
+
+
+
+    # Top Menu Links
+    "topmenu_links": [
+        {"name": "Home",  "url": "/", "permissions": ["auth.view_user"]},
+    ],
+
+    # Side Menu Order
+    "order_with_respect_to": ["tours", "bookings", "auth"],
+
+    "navigation_expanded": False,
+    "show_sidebar": True,
+
+   "hide_models": [
+    "auth.Group",
+    "auth.Permission",
+],
+   
+    # Icons (FontAwesome)
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "tours.TourPackage": "fas fa-plane",
+        "tours.Destination": "fas fa-map-marker-alt",
+        "tours.Booking": "fas fa-ticket-alt",
+    },
+
+    # Change theme colors
+    "theme": "darkly",   # try: flatly, cosmo, cyborg, darkly, lumen
+}
+
+import os
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
+

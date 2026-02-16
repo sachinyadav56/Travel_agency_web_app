@@ -1,0 +1,11 @@
+{% comment %} {% extends "admin/change_list.html" %}
+
+{% block content_title %}
+    <h1>Bookings</h1>
+
+    <div style="background:#28a745; color:white; padding:15px; 
+                border-radius:10px; margin-bottom:20px; font-size:18px;">
+        💰 Total Revenue: ₹ {{ total_revenue|default:0 }}
+    </div>
+
+{% endblock %} {% endcomment %}
