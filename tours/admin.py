@@ -1,21 +1,15 @@
 from django.contrib import admin
-from .models import Destination, TourPackage, TourImage
+from travel_project.admin import custom_admin_site
+from .models import Destination, TourPackage
 
 
-@admin.register(Destination)
+@admin.register(Destination, site=custom_admin_site)
 class DestinationAdmin(admin.ModelAdmin):
-    list_display = ('name',)  # ✅ Removed 'country' - it doesn't exist
+    list_display = ('name',)
     search_fields = ('name',)
 
 
-class TourImageInline(admin.TabularInline):
-    model = TourImage
-    extra = 1
-
-
-@admin.register(TourPackage)
+@admin.register(TourPackage, site=custom_admin_site)
 class TourPackageAdmin(admin.ModelAdmin):
     list_display = ('title', 'destination', 'price', 'available_seats')
     list_filter = ('destination',)
-    search_fields = ('title', 'destination__name')
-    inlines = [TourImageInline]

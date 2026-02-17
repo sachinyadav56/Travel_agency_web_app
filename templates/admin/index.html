@@ -12,11 +12,13 @@
         --danger-color: #dc3545;
         --info-color: #17a2b8;
     }
+body,
+.content-wrapper,
+.content,
+.wrapper {
+    background-color: #0f172a !important;
+}
 
-    body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-    }
 
     #content {
         background: transparent;
@@ -264,7 +266,7 @@
             <div class="stat-label">Total Bookings</div>
             <div class="stat-value">{{ total_bookings }}</div>
             <div class="stat-footer">
-                ✅ {{ paid_bookings }} Paid | ⏳ {{ pending_bookings }} Pending
+                {% comment %} ✅ {{ paid_bookings }} Paid | ⏳ {{ pending_bookings }} Pending {% endcomment %}
             </div>
         </div>
 
@@ -273,7 +275,7 @@
             <div class="stat-icon">🪑</div>
             <div class="stat-label">Total Seats Booked</div>
             <div class="stat-value">{{ total_seats }}</div>
-            <div class="stat-footer">Available: {{ total_available_seats }} seats</div>
+            {% comment %} <div class="stat-footer">Available: {{ total_available_seats }} seats</div> {% endcomment %}
         </div>
 
         <!-- Tour Packages -->
@@ -284,21 +286,7 @@
             <div class="stat-footer">Active tours in system</div>
         </div>
 
-        <!-- Booking Rate -->
-        <div class="stat-card danger">
-            <div class="stat-icon">📊</div>
-            <div class="stat-label">Payment Completion Rate</div>
-            <div class="stat-value">{{ booking_rate|floatformat:0 }}%</div>
-            <div class="stat-footer">Of bookings paid</div>
-        </div>
-
-        <!-- Avg Booking Value -->
-        <div class="stat-card">
-            <div class="stat-icon">💳</div>
-            <div class="stat-label">Avg Booking Value</div>
-            <div class="stat-value">{{ avg_booking_value }}</div>
-            <div class="stat-footer">Average per booking</div>
-        </div>
+        
     </div>
 
     <!-- Modules Section -->
