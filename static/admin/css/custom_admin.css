@@ -22,6 +22,7 @@
 html, body {
     background: linear-gradient(135deg, #050812 0%, #0a0e27 100%) !important;
     color: var(--text-primary) !important;
+    font-size: 0.8rem !important; /* Reduced by 20% */
 }
 
 /* Admin header styling */
@@ -320,7 +321,6 @@ label {
     }
     
     table {
-        font-size: 12px !important;
+        font-size: 9.6px !important; /* Reduced by 20% */
     }
 }
-
