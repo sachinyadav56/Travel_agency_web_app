@@ -38,10 +38,9 @@ def my_bookings(request):
     return render(request, 'bookings/my_bookings.html', {'bookings': bookings})
 
 
-@login_required(login_url='login')
+@login_required
 def cancel_booking(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id, user=request.user)
-
     tour = booking.tour
 
     # return seats
@@ -50,7 +49,8 @@ def cancel_booking(request, booking_id):
 
     booking.delete()
 
-    messages.success(request, "🗑️ Booking cancelled successfully")
+    # UPDATED MESSAGE TEXT
+    messages.success(request, " Booking cancel successfully")
     return redirect('my_bookings')
 
 
@@ -91,3 +91,16 @@ def edit_booking(request, booking_id):
         'booking': booking,
         'tours': tours
     })
+    
+@login_required
+def payment_success(request, booking_id):
+    """Called after successful UPI payment"""
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+    
+    booking.paid = True
+    booking.payment_method = "online"  
+    booking.save()
+    
+    # UPDATED MESSAGE TEXT
+    messages.success(request, "Booking successful")
+    return redirect('my_bookings')
