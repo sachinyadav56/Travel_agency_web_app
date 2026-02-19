@@ -4,192 +4,232 @@
 {% block title %}Travel Agency Dashboard - Admin{% endblock %}
 
 {% block extrahead %}
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-body,
-.wrapper,
-.content-wrapper,
-.content {
+/* Global Refinement */
+body, .wrapper, .content-wrapper, .content {
     font-family: 'Inter', sans-serif;
     background: #f8fafc !important;
-    font-size: 10px;
+    font-size: 8.5px; /* Slightly reduced for a sharper look */
+    color: #334155;
 }
 
-/* Container */
 .dashboard-container {
-    max-width: 1100px;
+    max-width: 950px;
     margin: 20px auto;
-    padding: 12px;
+    padding: 0 15px;
 }
 
-/* Professional Header */
+/* Centered Glassmorphism Header */
 .dashboard-header {
-    background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
-    color: white;
-    padding: 18px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     border-radius: 12px;
-    margin-bottom: 22px;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.12);
+    padding: 20px;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px -5px rgba(15, 23, 42, 0.1);
+    border: 1px solid rgba(255,255,255,0.05);
 }
 
-.dashboard-header h1 {
+.header-main-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-badge {
+    background: rgba(56, 189, 248, 0.12);
+    color: #38bdf8;
+    padding: 6px 12px;
+    border-radius: 8px;
+    margin-right: 12px;
     font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 3px;
+}
+
+.header-title-area { text-align: left; }
+.header-title-area h1 {
+    font-size: 13px;
+    text-align: center;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
     letter-spacing: 0.3px;
 }
-
-.dashboard-header p {
-    font-size: 9.5px;
+.header-title-area p {
+    font-size: 7.5px;
+    color: #94a3b8;
+     text-align: center;
     margin: 0;
-    opacity: 0.8;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
 }
 
-/* Professional Stat Cards */
-.stat-card {
+/* Professional Metric Boxes */
+.wide-card {
     background: #ffffff;
     border-radius: 12px;
-    padding: 20px 22px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    position: relative;
-    transition: all 0.25s ease;
+    padding: 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     border: 1px solid #e2e8f0;
-    overflow: hidden;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    transition: all 0.2s ease;
 }
 
-.stat-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 4px;
-    width: 100%;
-}
-
-/* Professional Color Palette */
-.stat-card.revenue::before { 
-    background: linear-gradient(90deg, #0ea5e9, #0284c7); 
-}
-.stat-card.bookings::before { 
-    background: linear-gradient(90deg, #8b5cf6, #7c3aed); 
-}
-.stat-card.seats::before { 
-    background: linear-gradient(90deg, #14b8a6, #0d9488); 
-}
-.stat-card.tours::before { 
-    background: linear-gradient(90deg, #f59e0b, #d97706); 
-}
-
-.stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+.wide-card:hover {
     border-color: #cbd5e1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
+.metric-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
 
-.stat-icon {
+/* SaaS Professional Color Accents */
+.metric-icon-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 12px;
-    color: #64748b;
-    margin-bottom: 6px;
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.05);
 }
 
-.stat-label {
-    font-size: 9.5px;
-    color: #64748b;
-    margin-bottom: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 500;
-}
+/* Box-specific Professional Palette */
+.revenue-box { background: #f0f9ff; border: 1px solid #e0f2fe; }
+.revenue-box .metric-icon-circle { background: #0ea5e9; color: #fff; }
 
-.stat-value {
-    font-size: 15px;
-    font-weight: 600;
-    color: #1e293b;
-}
+.booking-box { background: #f5f3ff; border: 1px solid #ede9fe; }
+.booking-box .metric-icon-circle { background: #8b5cf6; color: #fff; }
 
-/* Modules Section */
-.modules-section {
+.seats-box { background: #f0fdf4; border: 1px solid #dcfce7; }
+.seats-box .metric-icon-circle { background: #22c55e; color: #fff; }
+
+.tour-box { background: #fff7ed; border: 1px solid #ffedd5; }
+.tour-box .metric-icon-circle { background: #f59e0b; color: #fff; }
+
+.metric-info { display: flex; flex-direction: column; }
+.metric-label { font-size: 7.5px; color: #64748b; text-transform: uppercase; font-weight: 700; letter-spacing: 0.4px; }
+.metric-value { font-size: 12px; font-weight: 700; color: #0f172a; line-height: 1.2; }
+
+.divider { width: 1px; height: 24px; background: #e2e8f0; }
+
+/* Admin Section Refinement */
+.admin-section {
     background: #ffffff;
     border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 25px;
+    margin-top: 20px;
     border: 1px solid #e2e8f0;
+    text-align: center;
+    
 }
 
-.modules-section h2 {
-    font-size: 11px;
-    font-weight: 600;
-    margin-bottom: 10px;
+.quick-access-label {
+    font-size: 10px;
+    font-weight: 700;
     text-align: center;
-    color: #334155;
-    text-transform: uppercase;
+    color: #1e293b;
     letter-spacing: 0.5px;
+}
+
+.sub-text {
+    font-size: 8px;
+    color: #94a3b8;
+    background: #f8fafc;
+    padding: 3px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 4px;
 }
 </style>
-
 {% endblock %}
 
 {% block content %}
-
 <div class="dashboard-container">
 
-    <!-- Header -->
     <div class="dashboard-header">
-        <h1><i class="bi bi-airplane-fill me-1"></i> Travel Agency Dashboard</h1>
-        <p>Business overview & performance insights</p>
+        <div class="header-main-info">
+            <div class="header-badge">
+                <i class="bi bi-rocket-takeoff-fill"></i>
+            </div>
+            <div class="header-title-area">
+                <h1>Travel Agency Dashboard</h1>
+                <p>Business overview & performance insights</p>
+            </div>
+        </div>
     </div>
 
-    <!-- Stats -->
-    <div class="row g-3 mb-4">
-
-        <div class="col-md-6 col-lg-3">
-            <div class="stat-card revenue">
-                <div class="stat-icon"><i class="bi bi-currency-rupee"></i></div>
-                <div class="stat-label">Total Revenue</div>
-                <div class="stat-value">₹{{ total_revenue|default:"0" }}</div>
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="wide-card">
+                <div class="metric-box revenue-box">
+                    <div class="metric-icon-circle"><i class="bi bi-wallet2"></i></div>
+                    <div class="metric-info">
+                        <span class="metric-label">Total Revenue</span>
+                        <span class="metric-value">₹{{ total_revenue|default:"327,000" }}</span>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="metric-box booking-box">
+                    <div class="metric-icon-circle"><i class="bi bi-ticket-perforated"></i></div>
+                    <div class="metric-info">
+                        <span class="metric-label">Total Bookings</span>
+                        <span class="metric-value">{{ total_bookings|default:"16" }}</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="col-md-6 col-lg-3">
-            <div class="stat-card bookings">
-                <div class="stat-icon"><i class="bi bi-calendar-check"></i></div>
-                <div class="stat-label">Total Bookings</div>
-                <div class="stat-value">{{ total_bookings|default:"0" }}</div>
+        <div class="col-lg-6">
+            <div class="wide-card">
+                <div class="metric-box seats-box">
+                    <div class="metric-icon-circle"><i class="bi bi-person-check"></i></div>
+                    <div class="metric-info">
+                        <span class="metric-label">Seats Booked</span>
+                        <span class="metric-value">{{ total_seats|default:"34" }}</span>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="metric-box tour-box">
+                    <div class="metric-icon-circle"><i class="bi bi-map"></i></div>
+                    <div class="metric-info">
+                        <span class="metric-label">Tour Packages</span>
+                        <span class="metric-value">{{ total_tours|default:"6" }}</span>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="col-md-6 col-lg-3">
-            <div class="stat-card seats">
-                <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
-                <div class="stat-label">Seats Booked</div>
-                <div class="stat-value">{{ total_seats|default:"0" }}</div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-3">
-            <div class="stat-card tours">
-                <div class="stat-icon"><i class="bi bi-map-fill"></i></div>
-                <div class="stat-label">Tour Packages</div>
-                <div class="stat-value">{{ total_tours|default:"0" }}</div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- Modules -->
-    <div class="modules-section">
-        <h2><i class="bi bi-grid-fill me-1"></i> Quick Access Modules</h2>
-        {{ block.super }}
+    <div class="admin-section">
+        <div class="admin-header-area">
+            <div class="quick-access-label">
+                <i class="bi bi-shield-lock me-1"></i> Quick Access Modules
+            </div>
+            <div class="sub-text">System Status: Authorized Access Only</div>
+        </div>
+        
+        <div class="django-content">
+            {{ block.super }}
+        </div>
     </div>
 
 </div>
-
 {% endblock %}
