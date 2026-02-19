@@ -37,7 +37,7 @@ def register_view(request):
 
 
 def login_view(request):
-    # 👇 get redirect URL (VERY IMPORTANT)
+    #  get redirect URL (VERY IMPORTANT)
     next_url = request.GET.get('next')
 
     if request.method == "POST":
@@ -50,7 +50,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
 
-            # 🔥 redirect back to booking page
+            #  redirect back to booking page
             if next_url:
                 return redirect(next_url)
 
@@ -58,7 +58,7 @@ def login_view(request):
 
         messages.error(request, "Invalid username or password")
 
-    # 👇 send next to template
+    # send next to template
     return render(request, 'login.html', {'next': next_url})
 
 

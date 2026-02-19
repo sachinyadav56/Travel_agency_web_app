@@ -15,12 +15,12 @@ def payment_page(request, booking_id):
         user=request.user
     )
 
-    # ❌ Prevent double payment
+    # Prevent double payment
     if booking.paid:
         messages.info(request, "This booking is already paid.")
         return redirect('my_bookings')
 
-    # ✅ Calculate total amount
+    # Calculate total amount
     total_amount = booking.tour.price * booking.seats_booked
 
     if request.method == "POST":
@@ -51,15 +51,15 @@ def payment_page(request, booking_id):
         
         elif payment_method == 'cod':
             # Pay Later (On Arrival) - Just save payment method
-            booking.payment_method = "arrival"  # ✅ Use 'arrival' to match your model
+            booking.payment_method = "arrival" 
             booking.paid = False
             booking.save()
             
-            # ✅ Show message on my_bookings page after redirect
-            messages.success(request, "✅ Booking confirmed! Payment will be collected on arrival.")
+            # Show message on my_bookings page after redirect
+            messages.success(request, " Booking confirmed! Payment will be collected on arrival.")
             return redirect('my_bookings')
 
-    # ✅ Pass total_amount to template
+    # Pass total_amount to template
     return render(request, 'payment_page.html', {
         'booking': booking,
         'total_amount': total_amount
@@ -72,10 +72,10 @@ def payment_success(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id, user=request.user)
     
     booking.paid = True
-    booking.payment_method = "online"  # ✅ Use 'online' to match your model
+    booking.payment_method = "online"  #  Use 'online' to match your model
     booking.save()
     
-    messages.success(request, "✅ Payment successful! Your booking is confirmed.")
+    messages.success(request, " Payment successful! Your booking is confirmed.")
     return redirect('my_bookings')
 
 

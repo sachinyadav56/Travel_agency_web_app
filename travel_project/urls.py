@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from travel_project.admin import custom_admin_site
+
 # Activate custom admin
 import travel_project.admin
 

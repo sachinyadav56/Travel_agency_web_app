@@ -15,18 +15,18 @@ def book_tour(request, tour_id):
             messages.error(request, "Not enough seats available!")
             return render(request, 'book_tour.html', {'tour': tour})
 
-        # ✅ Create booking with seats_booked
+        # Create booking with seats_booked
         booking = Booking.objects.create(
             user=request.user,
             tour=tour,
-            seats_booked=seats  # ✅ IMPORTANT: Save the seats
+            seats_booked=seats  
         )
 
         # Reduce available seats
         tour.available_seats -= seats
         tour.save()
 
-        # ✅ Redirect to payment page (NOT my_bookings)
+        # Redirect to payment page 
         return redirect('payment_page', booking_id=booking.id)
 
     return render(request, 'book_tour.html', {'tour': tour})
@@ -65,25 +65,25 @@ def edit_booking(request, booking_id):
 
         new_tour = get_object_or_404(TourPackage, id=new_tour_id)
 
-        # Step 1: restore old seats
+        # restore old seats
         booking.tour.available_seats += booking.seats_booked
         booking.tour.save()
 
-        # Step 2: check availability
+        # check availability
         if new_seats > new_tour.available_seats:
             messages.error(request, "❌ Not enough seats available")
             return redirect('edit_booking', booking_id=booking.id)
 
-        # Step 3: update booking
+        #  update booking
         booking.tour = new_tour
         booking.seats_booked = new_seats
         booking.save()
 
-        # Step 4: reduce new seats
+        # reduce new seats
         new_tour.available_seats -= new_seats
         new_tour.save()
 
-        # ✅ Show success message on my_bookings page
+        #  Show success message on my_bookings page
         messages.success(request, "✏️ Booking updated successfully")
         return redirect('my_bookings')
 
